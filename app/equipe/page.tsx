@@ -88,13 +88,6 @@ export default function TeamPage() {
               Vous êtes passionné(e) par l'environnement et souhaitez contribuer à notre mission ? Découvrez nos
               opportunités de carrière et rejoignez l'aventure CarbonQuest !
             </p>
-            <Button
-              className="bg-gradient-to-r from-green-500 to-teal-600 hover:from-green-600 hover:to-teal-700 text-white border-none shadow-md hover:shadow-lg transition-all duration-200"
-              size="lg"
-            >
-              Voir nos offres d'emploi
-              <ArrowRight className="ml-2 h-5 w-5" />
-            </Button>
           </div>
         </div>
       </section>
