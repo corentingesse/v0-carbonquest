@@ -18,13 +18,13 @@ export function Footer() {
               Comprendre et réduire l&apos;impact carbone de notre alimentation, un scan à la fois.
             </p>
             <div className="flex space-x-4">
-              <Link href="#" className="text-gray-500 hover:text-green-600 transition-colors">
+              <Link href="https://www.facebook.com/YnovCampus" target="_blank" className="text-gray-500 hover:text-green-600 transition-colors">
                 <Facebook className="h-5 w-5" />
               </Link>
-              <Link href="#" className="text-gray-500 hover:text-green-600 transition-colors">
+              <Link href="https://twitter.com/YnovCampus" target="_blank" className="text-gray-500 hover:text-green-600 transition-colors">
                 <Twitter className="h-5 w-5" />
               </Link>
-              <Link href="#" className="text-gray-500 hover:text-green-600 transition-colors">
+              <Link href="https://www.instagram.com/ynovcampus" target="_blank" className="text-gray-500 hover:text-green-600 transition-colors">
                 <Instagram className="h-5 w-5" />
               </Link>
             </div>
@@ -76,17 +76,17 @@ export function Footer() {
             <h3 className="font-medium text-gray-900 mb-4">Légal</h3>
             <ul className="space-y-2 text-sm">
               <li>
-                <Link href="#" className="text-gray-600 hover:text-green-600 transition-colors">
+                <Link href="/mentions-legales" className="text-gray-600 hover:text-green-600 transition-colors">
                   Mentions légales
                 </Link>
               </li>
               <li>
-                <Link href="#" className="text-gray-600 hover:text-green-600 transition-colors">
+                <Link href="/politique-de-confidentialite" className="text-gray-600 hover:text-green-600 transition-colors">
                   Politique de confidentialité
                 </Link>
               </li>
               <li>
-                <Link href="#" className="text-gray-600 hover:text-green-600 transition-colors">
+                <Link href="/conditions-dutilisation" className="text-gray-600 hover:text-green-600 transition-colors">
                   Conditions d&apos;utilisation
                 </Link>
               </li>
