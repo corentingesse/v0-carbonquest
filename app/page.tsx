@@ -9,7 +9,7 @@ export default function Home() {
     <div className="flex flex-col">
       {/* Hero Section */}
       <section className="relative bg-gradient-to-br from-green-50 to-teal-100 py-20">
-        <div className="absolute inset-0 bg-center opacity-10"></div>
+        <div className="absolute inset-0 bg-white bg-center opacity-10"></div>
         <div className="container mx-auto px-4 relative z-10">
           <div className="flex flex-col md:flex-row items-center">
             <div className="md:w-1/2 mb-10 md:mb-0">

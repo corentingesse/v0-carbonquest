@@ -78,8 +78,8 @@ export function MainNav() {
 
         {/* Menu mobile */}
         {isMenuOpen && (
-          <div className="fixed inset-0 bg-white z-10 pt-20 px-6">
-            <nav className="flex flex-col space-y-4">
+          <div className="fixed inset-0 bg-transparent z-10 pt-20">
+            <nav className="flex bg-white px-6 flex-col space-y-4">
               {routes.map((route) => (
                 <Link
                   key={route.href}

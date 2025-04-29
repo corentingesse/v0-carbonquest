@@ -7,45 +7,38 @@ import { ArrowRight, Linkedin, Twitter, Mail } from "lucide-react"
 const teamMembers = [
   {
     id: 1,
-    name: "Sophie Martin",
-    role: "Fondatrice & CEO",
-    bio: "Passionnée d'écologie et d'innovation, Sophie a fondé CarbonQuest avec la vision de rendre l'impact environnemental de notre alimentation visible pour tous.",
-    image: "/placeholder.svg?height=300&width=300",
+    name: "Corentin GESSE ENTRESSANGLE",
+    role: "Fondateur",
   },
   {
     id: 2,
-    name: "Thomas Dubois",
-    role: "Directeur Technique",
-    bio: "Expert en développement logiciel, Thomas supervise la création de nos outils numériques pour les rendre accessibles et performants.",
-    image: "/placeholder.svg?height=300&width=300",
+    name: "Meldryck SAÏD",
+    role: "Fondateur",
   },
   {
     id: 3,
-    name: "Emma Leroy",
-    role: "Responsable Scientifique",
-    bio: "Docteure en sciences environnementales, Emma veille à la rigueur scientifique de nos données et de nos méthodes de calcul d'empreinte carbone.",
-    image: "/placeholder.svg?height=300&width=300",
+    name: "Quentin FAYOLLE",
+    role: "Fondateur",
   },
   {
     id: 4,
-    name: "Lucas Bernard",
-    role: "Designer UX/UI",
-    bio: "Créatif et centré sur l'utilisateur, Lucas conçoit des interfaces intuitives et engageantes pour nos applications.",
-    image: "/placeholder.svg?height=300&width=300",
+    name: "Dorian JOLY",
+    role: "Fondateur",
   },
   {
     id: 5,
-    name: "Camille Petit",
-    role: "Responsable Marketing",
-    bio: "Experte en communication environnementale, Camille développe notre stratégie pour sensibiliser le plus grand nombre à l'impact de notre alimentation.",
-    image: "/placeholder.svg?height=300&width=300",
+    name: "Mano RAICHON",
+    role: "Fondateur",
   },
   {
     id: 6,
-    name: "Antoine Moreau",
-    role: "Développeur Full-Stack",
-    bio: "Passionné de technologies vertes, Antoine développe les fonctionnalités de nos applications avec un souci constant de performance et d'accessibilité.",
-    image: "/placeholder.svg?height=300&width=300",
+    name: "William CAMPO",
+    role: "Fondateur",
+  },
+  {
+    id: 7,
+    name: "Martin BARRE",
+    role: "Fondateur",
   },
 ]
 
@@ -76,24 +69,9 @@ export default function TeamPage() {
                 key={member.id}
                 className="border-none shadow-lg hover:shadow-xl transition-all duration-300 bg-white/90 backdrop-blur-sm overflow-hidden"
               >
-                <div className="aspect-square relative bg-gradient-to-br from-gray-100 to-gray-200">
-                  <Image src={member.image || "/placeholder.svg"} alt={member.name} fill className="object-cover" />
-                </div>
                 <CardContent className="p-6">
                   <h3 className="text-xl font-bold mb-1">{member.name}</h3>
                   <p className="text-green-600 font-medium mb-3">{member.role}</p>
-                  <p className="text-gray-600 mb-4">{member.bio}</p>
-                  <div className="flex space-x-3">
-                    <Button variant="ghost" size="icon" className="rounded-full hover:bg-green-50 hover:text-green-600">
-                      <Linkedin className="h-5 w-5" />
-                    </Button>
-                    <Button variant="ghost" size="icon" className="rounded-full hover:bg-green-50 hover:text-green-600">
-                      <Twitter className="h-5 w-5" />
-                    </Button>
-                    <Button variant="ghost" size="icon" className="rounded-full hover:bg-green-50 hover:text-green-600">
-                      <Mail className="h-5 w-5" />
-                    </Button>
-                  </div>
                 </CardContent>
               </Card>
             ))}
