@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
-import { CheckCircle, XCircle, Leaf, Award, Volume2, VolumeX } from "lucide-react"
+import { CheckCircle, XCircle, Leaf, Award } from "lucide-react"
 import { motion } from "framer-motion"
 import dynamic from "next/dynamic"
 
@@ -336,13 +336,6 @@ interface GameProps {
   mute: boolean
 }
 
-// Ajouter cette fonction utilitaire avant le composant Game
-const getSupportedAudioPath = (baseName: string) => {
-  // Essayer d'abord le format MP3, puis WAV si disponible
-  // Dans un environnement de production, on pourrait vérifier la compatibilité du navigateur
-  return `/sounds/${baseName}.${typeof window !== "undefined" && window.AudioContext ? "mp3" : "wav"}`
-}
-
 const Game = ({ onFinish, lang, hc, mute }: GameProps) => {
   const [foods] = useState(() => dailyShuffle(LOCAL_FOODS).slice(0, NUM_ROUNDS))
   const [idx, setIdx] = useState(0)
@@ -351,61 +344,68 @@ const Game = ({ onFinish, lang, hc, mute }: GameProps) => {
   const [t, setT] = useState(60)
   const [fact, setFact] = useState<string | null>(null)
   const [showConfetti, setShowConfetti] = useState(false)
-  // Remplacer la gestion du son actuelle
-  // Gestion du son avec vérification et gestion d'erreurs
-  const playSound = (type: "correct" | "wrong") => {
-    if (mute || typeof window === "undefined") return
+  const [feedback, setFeedback] = useState<{ type: "correct" | "wrong" | null }>({ type: null })
 
-    // Vérifier si l'API Audio est supportée
-    if (typeof Audio === "undefined") {
-      console.warn("API Audio non supportée par ce navigateur")
-      return
-    }
-
-    try {
-      // Essayer d'abord le format MP3
-      const sound = new Audio(`/sounds/${type}.mp3`)
-
-      // Ajouter un gestionnaire d'erreur
-      sound.addEventListener("error", () => {
-        console.warn(`Format MP3 non supporté, essai avec WAV`)
-        try {
-          // Essayer le format WAV en cas d'échec
-          const wavSound = new Audio(`/sounds/${type}.wav`)
-          wavSound.play().catch((e) => {
-            console.warn(`Impossible de lire le son WAV: ${e.message}`)
-          })
-        } catch (wavErr) {
-          console.warn(`Erreur avec le format WAV: ${wavErr}`)
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setT((prevTime) => {
+        if (prevTime <= 1) {
+          clearInterval(timer)
+          if (idx < foods.length) {
+            onFinish(score, kms, NUM_ROUNDS)
+          }
+          return 0
         }
+        return prevTime - 1
       })
+    }, 1000)
 
-      // Essayer de jouer le son MP3
-      sound.play().catch((e) => {
-        console.warn(`Erreur de lecture audio: ${e.message}`)
-      })
-    } catch (err) {
-      console.warn(`Erreur lors de la création de l'audio: ${err}`)
+    return () => clearInterval(timer)
+  }, [idx, foods.length, kms, onFinish, score])
+
+  useEffect(() => {
+    if (idx >= foods.length) {
+      onFinish(score, kms, NUM_ROUNDS)
     }
-  }
+  }, [idx, foods.length, kms, onFinish, score])
+
   const answer = (choice: "local" | "import") => {
+    if (idx >= foods.length) return
+
     const f = foods[idx]
     const ok = f.origin === choice
+
+    setFeedback({ type: ok ? "correct" : "wrong" })
+
     if (ok) {
       setScore((s) => s + 1)
       if (f.origin === "local") setKms((k) => k + (f.km_import - f.km_local))
-      playSound("correct")
       setFact(rnd(lang === "FR" ? FUN_FACTS_FR : FUN_FACTS_EN))
       setShowConfetti(true)
       setTimeout(() => setShowConfetti(false), 1000)
     } else {
-      playSound("wrong")
       setFact(null)
     }
-    setIdx((i) => i + 1)
+
+    setTimeout(() => {
+      setIdx((i) => i + 1)
+      setFeedback({ type: null })
+    }, 800)
   }
 
   const current = foods[idx]
+
+  if (idx >= foods.length) {
+    return (
+      <div
+        className={`min-h-screen flex flex-col items-center justify-center p-6 ${
+          hc ? "bg-gray-900 text-white" : "bg-white"
+        }`}
+      >
+        <p>Calcul de vos résultats...</p>
+      </div>
+    )
+  }
 
   return (
     <div
@@ -414,8 +414,11 @@ const Game = ({ onFinish, lang, hc, mute }: GameProps) => {
       }`}
     >
       {showConfetti && <Confetti numberOfPieces={120} recycle={false} />}
-      <div className="mb-4 text-gray-600">
+      <div className={`mb-4 ${hc ? "text-gray-300" : "text-gray-600"}`}>
         {L[lang].time} {t}s
+      </div>
+      <div className="absolute top-6 left-6 bg-white/80 backdrop-blur-md p-2 rounded-lg shadow">
+        <span className="font-semibold">{score}/{idx}</span>
       </div>
       {current ? (
         <>
@@ -426,23 +429,48 @@ const Game = ({ onFinish, lang, hc, mute }: GameProps) => {
             transition={{ duration: 0.3 }}
             className="flex flex-col items-center"
           >
-            <Card className="w-64 md:w-80 shadow-xl">
+            <Card
+              className={`w-64 md:w-80 shadow-xl ${
+                feedback.type
+                  ? feedback.type === "correct"
+                    ? "border-4 border-green-500"
+                    : "border-4 border-red-500"
+                  : ""
+              }`}
+            >
               <CardContent className="text-9xl py-6 text-center">{current.emoji}</CardContent>
             </Card>
             <h2 className="mt-4 text-xl font-semibold text-center">
               {lang === "FR" ? current.name_fr : current.name_en}
             </h2>
+
+            {feedback.type && (
+              <motion.div initial={{ opacity: 0, scale: 0.5 }} animate={{ opacity: 1, scale: 1 }} className="mt-2 mb-4">
+                {feedback.type === "correct" ? (
+                  <CheckCircle className="w-8 h-8 text-green-600" />
+                ) : (
+                  <XCircle className="w-8 h-8 text-red-600" />
+                )}
+              </motion.div>
+            )}
+
             <div className="grid grid-cols-2 gap-4 mt-8 w-full max-w-xs">
               <Button
                 onClick={() => answer("local")}
-                className="bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700"
+                className={`bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 ${
+                  feedback.type ? "pointer-events-none" : ""
+                }`}
+                disabled={feedback.type !== null}
               >
                 {L[lang].local}
               </Button>
               <Button
                 variant="outline"
                 onClick={() => answer("import")}
-                className="border-green-500 text-green-600 hover:bg-green-50"
+                className={`border-green-500 text-green-600 hover:bg-green-50 ${
+                  feedback.type ? "pointer-events-none" : ""
+                }`}
+                disabled={feedback.type !== null}
               >
                 {L[lang].import}
               </Button>
@@ -556,7 +584,6 @@ export default function CircuitDashGame() {
   const [total, setTotal] = useState(NUM_ROUNDS)
   const [lang, setLang] = useState<Lang>("FR")
   const [hc, setHc] = useState(false)
-  const [mute, setMute] = useState(false)
   const [impactKm] = useState(123456) // placeholder fetched from backend
 
   // Register service worker once (client‑side only)
@@ -568,45 +595,18 @@ export default function CircuitDashGame() {
     }
   }, [])
 
-  // Pick slogan variant once per session
-  const slogans = lang === "FR" ? SLOGANS_FR : SLOGANS_EN
-  const [sloganVariant] = useState(() => rnd(slogans))
-
-  const toggleMute = () => setMute((m) => !m)
-
-  // Ajouter ce code au début du composant CircuitDashGame
+  // Pour éviter les erreurs d'hydratation, utiliser un slogan fixe au lieu d'un aléatoire
+  // Ou mieux, le générer uniquement côté client avec useEffect
+  const [sloganVariant, setSloganVariant] = useState(SLOGANS_FR[0]); // Valeur par défaut prévisible
+  
+  // Choisir le slogan côté client seulement après le premier rendu
   useEffect(() => {
-    // Vérifier la compatibilité audio au chargement
-    if (typeof window !== "undefined" && typeof Audio !== "undefined") {
-      const testAudio = new Audio()
-      const formats = {
-        mp3: testAudio.canPlayType("audio/mpeg"),
-        wav: testAudio.canPlayType("audio/wav"),
-      }
-
-      console.info("Formats audio supportés:", formats)
-
-      if (!formats.mp3 && !formats.wav) {
-        console.warn("Aucun format audio supporté - les sons seront désactivés")
-        setMute(true)
-      }
-    } else {
-      console.warn("API Audio non disponible - les sons seront désactivés")
-      setMute(true)
-    }
-  }, [])
+    const slogans = lang === "FR" ? SLOGANS_FR : SLOGANS_EN;
+    setSloganVariant(rnd(slogans));
+  }, [lang]);
 
   return (
     <>
-      {/* Mute toggle */}
-      <button
-        onClick={toggleMute}
-        className="fixed top-4 right-4 z-50 bg-white/80 backdrop-blur-md p-2 rounded-full shadow-lg"
-        aria-label={mute ? "Activer le son" : "Couper le son"}
-      >
-        {mute ? <VolumeX /> : <Volume2 />}
-      </button>
-
       {page === "land" && (
         <>
           <Landing
@@ -631,7 +631,7 @@ export default function CircuitDashGame() {
           }}
           lang={lang}
           hc={hc}
-          mute={mute}
+          mute={true}
         />
       )}
 
