@@ -48,7 +48,7 @@ export function MainNav() {
   return (
     <div className="flex items-center justify-between">
       <Link href="/" className="flex items-center space-x-2">
-        <Image src="/images/logo.png" alt="CarbonQuest Logo" width={50} height={50} />
+        <Image src="/images/logo-icon.png" alt="CarbonQuest Logo" width={50} height={50} />
         <span className="font-bold text-xl bg-gradient-to-r from-green-600 to-teal-800 bg-clip-text text-transparent hidden sm:inline-block">
           CarbonQuest
         </span>

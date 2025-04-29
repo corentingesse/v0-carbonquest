@@ -9,7 +9,7 @@ export function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           <div className="space-y-4">
             <div className="flex items-center space-x-2">
-              <Image src="/images/logo.png" alt="CarbonQuest Logo" width={40} height={40} />
+              <Image src="/images/logo-icon.png" alt="CarbonQuest Logo" width={40} height={40} />
               <span className="font-bold text-lg bg-gradient-to-r from-green-600 to-teal-800 bg-clip-text text-transparent">
                 CarbonQuest
               </span>

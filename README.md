@@ -1,3 +1,12 @@
+## Installation locale
+
+Pour installer et lancer le projet en local :
+
+```bash
+npm install --legacy-peer-deps
+npm run dev
+```
+
 # Carbon footprint app
 
 *Automatically synced with your [v0.dev](https://v0.dev) deployments*

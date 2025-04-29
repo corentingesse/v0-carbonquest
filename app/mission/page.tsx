@@ -35,11 +35,11 @@ export default function MissionPage() {
               <div className="relative">
                 <div className="absolute inset-0 bg-green-300 rounded-full blur-3xl opacity-20"></div>
                 <Image
-                  src="/images/logo.png"
+                  src="/images/ferme.jpeg"
                   alt="CarbonQuest Logo"
                   width={300}
                   height={300}
-                  className="relative z-10"
+                  className="relative rounded-2xl z-10"
                 />
               </div>
             </div>
@@ -56,7 +56,7 @@ export default function MissionPage() {
               La connaissance est le premier pas vers le changement. Notre mission est de donner à chacun les
               informations nécessaires pour faire des choix alimentaires plus durables.
             </p>
-            <p className="text-gray-500 font-medium">Sophie Martin, Fondatrice de CarbonQuest</p>
+            <p className="text-gray-500 font-medium">Les fondateurs de CarbonQuest</p>
           </div>
         </div>
       </section>

@@ -304,7 +304,7 @@ const Landing = ({ onStart, lang, setLang, hc, toggleHC, sloganVariant }: Landin
       {sloganVariant}
     </motion.h1>
     <p className="max-w-xl text-lg md:text-xl mb-8 italic">{rnd(lang === "FR" ? FUN_FACTS_FR : FUN_FACTS_EN)}</p>
-    <div className="flex gap-4 mb-6">
+    <div className="flex flex-col lg:flex-row items-center gap-4 mb-6">
       <Button size="lg" className="px-8 py-6 text-lg" onClick={onStart}>
         <Leaf className="mr-2" />
         {L[lang].start}
@@ -313,11 +313,11 @@ const Landing = ({ onStart, lang, setLang, hc, toggleHC, sloganVariant }: Landin
         {lang === "FR" ? "EN" : "FR"}
       </Button>
       <Button variant="outline" onClick={toggleHC}>
-        {hc ? "Standard" : "HC"}
+        {hc ? "Standard" : "Mode contrasté"}
       </Button>
     </div>
     <a
-      href="https://www.openstreetmap.org/search?query=market"
+      href="https://www.jours-de-marche.fr"
       target="_blank"
       rel="noopener noreferrer"
       className="underline text-sm opacity-70"
