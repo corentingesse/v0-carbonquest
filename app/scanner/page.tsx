@@ -109,7 +109,7 @@ export default function ScannerPage() {
                           <img
                             src="images/code-barre.avif"
                             alt="Scanner illustration"
-                            className="h-36 w-36 relative z-10"
+                            className="h-36 w-36 rounded-2xl relative z-10"
                           />
                         </div>
                       </div>
