@@ -4,7 +4,7 @@ const CACHE_NAME = "circuit-dash-v1"
 self.addEventListener("install", (event) => {
   event.waitUntil(
     caches.open(CACHE_NAME).then((cache) => {
-      return cache.addAll(["/","/images/logo.png"])
+      return cache.addAll(["/", "/images/logo.png"])
     }),
   )
 })
