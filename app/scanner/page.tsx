@@ -107,7 +107,7 @@ export default function ScannerPage() {
                         <div className="relative">
                           <div className="absolute inset-0 bg-green-400/20 rounded-full blur-2xl"></div>
                           <img
-                            src="/placeholder.svg?height=150&width=150"
+                            src="images/code-barre.avif"
                             alt="Scanner illustration"
                             className="h-36 w-36 relative z-10"
                           />
